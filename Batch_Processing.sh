@@ -1,5 +1,7 @@
 #!/bin/bash
 #Batch processing
+#The data was acquired using Bruker 7T MRI machine
+#The default output of the machine is 2dseq
 cd /media/amr/HDD/Work/Stimulation/Stims
 for folder in *;do
 	pvconv.pl $folder -outdir $folder
