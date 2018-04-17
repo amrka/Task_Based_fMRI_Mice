@@ -36,3 +36,19 @@ done
 # Stim_003_15.nii.gz
 # Stim_003_16.nii.gz
 # Stim_003_17.nii.gz
+
+
+#After renaming and adding the run number and frequency
+# Anat_003_bet.nii.gz
+# Anat_003_Mask.nii.gz
+# Anat_003.nii.gz
+# EPI_003_Mask.nii.gz
+# EPI_Average_003.nii.gz
+# Stim_003_10_10Hz_run001.nii.gz
+# Stim_003_11_10Hz_run002.nii.gz
+# Stim_003_12_10Hz_run003.nii.gz
+# Stim_003_13_20Hz_run001.nii.gz
+# Stim_003_14_20Hz_run002.nii.gz
+# Stim_003_15_20Hz_run003.nii.gz
+# Stim_003_16_40Hz_run001.nii.gz
+# Stim_003_17_40Hz_run002.nii.gz
