@@ -22,3 +22,17 @@ for folder in *;do
 done
 
 #After this you have to name the runs to 10, 20, 40 Hz manually	
+#sample to the name of the files after this step and before adding the frequency
+# Anat_003_bet.nii.gz
+# Anat_003_Mask.nii.gz
+# Anat_003.nii.gz
+# EPI_003_Mask.nii.gz
+# EPI_Average_003.nii.gz
+# Stim_003_10.nii.gz
+# Stim_003_11.nii.gz
+# Stim_003_12.nii.gz
+# Stim_003_13.nii.gz
+# Stim_003_14.nii.gz
+# Stim_003_15.nii.gz
+# Stim_003_16.nii.gz
+# Stim_003_17.nii.gz
