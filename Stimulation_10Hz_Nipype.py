@@ -372,7 +372,7 @@ Slicer_f_Contrast.inputs.image_width = 750
 dof = 150 - (len(subject_list) * len(session_list)) #No of volumes
 #-----------------------------------------------------------------------------------------------------
 # In[15]:
-#Generate dof file for each cope1 spoiler alert, I have only one
+#Generate dof file for each cope1, spoiler alert, I have only one
 FEtdof_t1 = Node(fsl.ImageMaths(), name = 'Generate_FEtdof_t1')
 FEtdof_t1.inputs.op_string = '-mul 0 -add %f' % (dof)
 FEtdof_t1.inputs.out_file = 'FEtdof_t1.nii.gz'
@@ -410,6 +410,10 @@ Apply_Transformations_FEtdof_t1.inputs.input_image_type = 3
 Apply_Transformations_FEtdof_t1.inputs.num_threads = 1
 Apply_Transformations_FEtdof_t1.inputs.float = True
 Apply_Transformations_FEtdof_t1.inputs.reference_image = Study_Template
+#----------------------------------------------------------------------------------------------------
+# IN[17]
+#Mask FETdof after applyinh the transformations to the study template
+Mask_FEtdof = Node(fsl.ApplyMask(), name = 'Mask_FEtdof')
 
 
 #-----------------------------------------------------------------------------------------------------
@@ -490,7 +494,6 @@ preproc_task.connect([
 
               (Film_Gls, FEtdof_t1, [('copes','in_file')]),
 
-
               (Film_Gls, Apply_Transformations_cope1, [('copes','input_image')]),
               (Merge_Transformations, Apply_Transformations_cope1, [('out','transforms')]),
 
@@ -501,6 +504,11 @@ preproc_task.connect([
 
               (FEtdof_t1, Apply_Transformations_FEtdof_t1, [('out_file','input_image')]),
               (Merge_Transformations, Apply_Transformations_FEtdof_t1, [('out','transforms')]),
+
+              (Apply_Transformations_FEtdof_t1, Mask_FEtdof, [('output_image','in_file')]),
+              (selectfiles, Mask_FEtdof, [('EPI_Mask','mask_file')])
+
+
 
               ])
 
