@@ -80,7 +80,7 @@ datasink.inputs.substitutions = substitutions
 # In[3]:
 
 Study_Template = '/media/amr/HDD/Work/October_Acquistion/Anat_Template.nii.gz' 
-
+Study_Template_Mask = '/media/amr/HDD/Work/October_Acquistion/Anat_Template_Mask.nii.gz'
 #-----------------------------------------------------------------------------------------------------
 # In[7]:
 
@@ -414,7 +414,7 @@ Apply_Transformations_FEtdof_t1.inputs.reference_image = Study_Template
 # IN[17]
 #Mask FETdof after applyinh the transformations to the study template
 Mask_FEtdof = Node(fsl.ApplyMask(), name = 'Mask_FEtdof')
-
+Mask_FEtdof.inputs.mask_file = Study_Template_Mask
 
 #-----------------------------------------------------------------------------------------------------
 # In[15]:
@@ -506,9 +506,6 @@ preproc_task.connect([
               (Merge_Transformations, Apply_Transformations_FEtdof_t1, [('out','transforms')]),
 
               (Apply_Transformations_FEtdof_t1, Mask_FEtdof, [('output_image','in_file')]),
-              (selectfiles, Mask_FEtdof, [('EPI_Mask','mask_file')])
-
-
 
               ])
 
