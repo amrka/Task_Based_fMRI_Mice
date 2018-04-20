@@ -27,8 +27,7 @@ MatlabCommand.set_default_matlab_cmd("matlab -nodesktop -nosplash")
 
 #-----------------------------------------------------------------------------------------------------
 # In[2]:
-
-experiment_dir = '/media/amr/HDD/Work/Stimulation' 
+experiment_dir = '/media/amr/HDD/Work/Stimulation'  
 
 subject_list = ['003','005','008','011','018','019','020','13x']
 session_list = ['run001', 'run002', 'run003']
@@ -122,12 +121,12 @@ HighresToTemplate.inputs.transforms= ['Rigid', 'Affine', 'SyN']
 HighresToTemplate.inputs.winsorize_lower_quantile=0.005
 HighresToTemplate.inputs.winsorize_upper_quantile=0.995
 HighresToTemplate.inputs.convergence_threshold=[1e-06]
-HighresToTemplate.inputs.convergence_window_size=[20]
+HighresToTemplate.inputs.convergence_window_size=[10]
 HighresToTemplate.inputs.metric=['MI', 'MI', 'CC']
 HighresToTemplate.inputs.metric_weight=[1.0]*3
-HighresToTemplate.inputs.number_of_iterations=[[2000, 500, 250, 200],
-                                                 [2000, 500, 250, 200],
-                                                 [200, 70, 50, 20]]
+HighresToTemplate.inputs.number_of_iterations=[[1000, 500, 250, 100],
+                                                 [1000, 500, 250, 100],
+                                                 [100, 70, 50, 20]]
 HighresToTemplate.inputs.radius_or_number_of_bins=[32, 32, 4]
 HighresToTemplate.inputs.sampling_percentage=[0.25, 0.25, 1]
 HighresToTemplate.inputs.sampling_strategy=['Regular',
@@ -160,12 +159,12 @@ CoReg.inputs.transforms= ['Rigid']
 CoReg.inputs.winsorize_lower_quantile=0.005
 CoReg.inputs.winsorize_upper_quantile=0.995
 CoReg.inputs.convergence_threshold=[1e-06]
-CoReg.inputs.convergence_window_size=[20]
+CoReg.inputs.convergence_window_size=[10]
 CoReg.inputs.metric=['MI', 'MI', 'CC']
 CoReg.inputs.metric_weight=[1.0]*3
-CoReg.inputs.number_of_iterations=[[2000, 500, 250, 200],
-                                                 [2000, 500, 250, 200],
-                                                 [200, 70, 50, 20]]
+CoReg.inputs.number_of_iterations=[[1000, 500, 250, 100],
+                                                 [1000, 500, 250, 100],
+                                                 [100, 70, 50, 20]]
 CoReg.inputs.radius_or_number_of_bins=[32, 32, 4]
 CoReg.inputs.sampling_percentage=[0.25, 0.25, 1]
 CoReg.inputs.sampling_strategy=['Regular',
@@ -182,12 +181,12 @@ CoReg.inputs.verbose=True
 CoReg.inputs.output_warped_image=True
 CoReg.inputs.float=True
 #-----------------------------------------------------------------------------------------------------
-# In[20]:
+# In[10]:
 Merge_Transformations = Node(Merge(2), name = 'Merge_Transformations')
 
 
 #----------------------------------------------------------------------------------------------------
-# In[20]:
+# In[10]:
 # fslroi ${folder} example_func 450 1;
 FslRoi = Node(fsl.ExtractROI(), name = 'FslRoi')
 FslRoi.inputs.t_min = 75
@@ -222,7 +221,7 @@ def Plot_Motion(motion_par, abs_disp, rel_disp):
     movement = np.loadtxt(motion_par)
     abs_disp = np.loadtxt(abs_disp)
     rel_disp = np.loadtxt(rel_disp)
-    plt.figure(figsize=(8,20), dpi=300)
+    plt.figure(figsize=(8,10), dpi=300)
 
     plt.subplot(311)
     plt.title('Translations in mm')
@@ -254,7 +253,7 @@ Plot_Motion = Node(name = 'Plot_Motion',
 Spm_Smoothing = Node(spm.Smooth(), name = 'Smoothing')
 #I tried all these kernels and this one is most reasonable one
 Spm_Smoothing.inputs.fwhm = [5.75, 5.75, 8]
-#Spm_Smoothing.iterables = ('fwhm', [[5,5,8],[5.75,5.75,8],[5.75,5.75,20], [5.75,5.75,16]])
+#Spm_Smoothing.iterables = ('fwhm', [[5,5,8],[5.75,5.75,8],[5.75,5.75,10], [5.75,5.75,16]])
 
 #-----------------------------------------------------------------------------------------------------
 #Getting median intensity
@@ -264,7 +263,7 @@ Median_Intensity.inputs.op_string = '-k %s -p 50'
 
 #Scale median intensity 
 def Scale_Median_Intensity (median_intensity):
-    scaling = 20000/median_intensity
+    scaling = 10000/median_intensity
     return scaling
 
 Scale_Median_Intensity = Node(name = 'Scale_Median_Intensity',
@@ -274,7 +273,7 @@ Scale_Median_Intensity = Node(name = 'Scale_Median_Intensity',
 
 #-----------------------------------------------------------------------------------------------------
 #Global Intensity Normalization by multiplying by the scaling value
-#the grand-mean intensity normalisation factor ( to give a median brain intensity of 20000 )
+#the grand-mean intensity normalisation factor ( to give a median brain intensity of 10000 )
 #grand mean scaling
 Intensity_Normalization = Node(fsl.BinaryMaths(), name = 'Intensity_Normalization')
 Intensity_Normalization.inputs.operation = 'mul'
@@ -306,7 +305,7 @@ Film_Gls = Node(fsl.FILMGLS(), name = 'Fit_Design_to_Timeseries')
 Film_Gls.inputs.design_file = design
 Film_Gls.inputs.tcon_file = t_contrast
 Film_Gls.inputs.fcon_file = f_contrast
-Film_Gls.inputs.threshold = 2000.0
+Film_Gls.inputs.threshold = 1000.0
 Film_Gls.inputs.smooth_autocorr = True
 
 #-----------------------------------------------------------------------------------------------------
@@ -373,7 +372,7 @@ Slicer_f_Contrast.inputs.image_width = 750
 dof = 150 - (len(subject_list) * len(session_list)) #No of volumes
 #-----------------------------------------------------------------------------------------------------
 # In[15]:
-#Generate dof file for each cope1 spoiler alert, I have only one
+#Generate dof file for each cope1, spoiler alert, I have only one
 FEtdof_t1 = Node(fsl.ImageMaths(), name = 'Generate_FEtdof_t1')
 FEtdof_t1.inputs.op_string = '-mul 0 -add %f' % (dof)
 FEtdof_t1.inputs.out_file = 'FEtdof_t1.nii.gz'
@@ -411,6 +410,10 @@ Apply_Transformations_FEtdof_t1.inputs.input_image_type = 3
 Apply_Transformations_FEtdof_t1.inputs.num_threads = 1
 Apply_Transformations_FEtdof_t1.inputs.float = True
 Apply_Transformations_FEtdof_t1.inputs.reference_image = Study_Template
+#----------------------------------------------------------------------------------------------------
+# IN[17]
+#Mask FETdof after applyinh the transformations to the study template
+Mask_FEtdof = Node(fsl.ApplyMask(), name = 'Mask_FEtdof')
 
 
 #-----------------------------------------------------------------------------------------------------
@@ -491,7 +494,6 @@ preproc_task.connect([
 
               (Film_Gls, FEtdof_t1, [('copes','in_file')]),
 
-
               (Film_Gls, Apply_Transformations_cope1, [('copes','input_image')]),
               (Merge_Transformations, Apply_Transformations_cope1, [('out','transforms')]),
 
@@ -502,6 +504,11 @@ preproc_task.connect([
 
               (FEtdof_t1, Apply_Transformations_FEtdof_t1, [('out_file','input_image')]),
               (Merge_Transformations, Apply_Transformations_FEtdof_t1, [('out','transforms')]),
+
+              (Apply_Transformations_FEtdof_t1, Mask_FEtdof, [('output_image','in_file')]),
+              (selectfiles, Mask_FEtdof, [('EPI_Mask','mask_file')])
+
+
 
               ])
 
