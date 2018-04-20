@@ -33,8 +33,8 @@ subject_list = ['003','005','008','011','018','019','020','13x']
 session_list = ['run001', 'run002', 'run003']
 
                 
-output_dir  = '40Hz_Task_Based_OutputDir'
-working_dir = '40Hz_Task_Based_WorkingDir'
+output_dir  = '20Hz_Task_Based_OutputDir'
+working_dir = '20Hz_Task_Based_WorkingDir'
 
 preproc_task = Workflow(name = 'preproc_task')
 preproc_task.base_dir = opj(experiment_dir, working_dir)
@@ -54,7 +54,7 @@ templates = {
              'Anat'      : 'Data/{subject_id}/Anat_{subject_id}_bet.nii.gz',
              'Anat_Mask' : 'Data/{subject_id}/Anat_{subject_id}_Mask.nii.gz',
 
-             'Stim_40Hz' : 'Data/{subject_id}/Stim_{subject_id}_??_40Hz_{session_id}.nii.gz',
+             'Stim_20Hz' : 'Data/{subject_id}/Stim_{subject_id}_??_20Hz_{session_id}.nii.gz',
              'EPI_Mask'  : 'Data/{subject_id}/EPI_{subject_id}_Mask.nii.gz'
              }
 
@@ -80,7 +80,7 @@ datasink.inputs.substitutions = substitutions
 # In[3]:
 
 Study_Template = '/media/amr/HDD/Work/October_Acquistion/Anat_Template.nii.gz' 
-
+Study_Template_Mask = '/media/amr/HDD/Work/October_Acquistion/Anat_Template_Mask.nii.gz'
 #-----------------------------------------------------------------------------------------------------
 # In[7]:
 
@@ -414,7 +414,7 @@ Apply_Transformations_FEtdof_t1.inputs.reference_image = Study_Template
 # IN[17]
 #Mask FETdof after applyinh the transformations to the study template
 Mask_FEtdof = Node(fsl.ApplyMask(), name = 'Mask_FEtdof')
-
+Mask_FEtdof.inputs.mask_file = Study_Template_Mask
 
 #-----------------------------------------------------------------------------------------------------
 # In[15]:
@@ -425,7 +425,7 @@ preproc_task.connect([
               (selectfiles, BiasFieldCorrection, [('Anat','input_image')]),
 
               (BiasFieldCorrection,HighresToTemplate,[('output_image','moving_image')]),
-              (selectfiles, Bet_mcf, [('Stim_40Hz','in_file')]),
+              (selectfiles, Bet_mcf, [('Stim_20Hz','in_file')]),
               (selectfiles, Bet_mcf, [('EPI_Mask','mask_file')]),
 
               (Bet_mcf, FslRoi, [('out_file','in_file')]),
@@ -506,9 +506,6 @@ preproc_task.connect([
               (Merge_Transformations, Apply_Transformations_FEtdof_t1, [('out','transforms')]),
 
               (Apply_Transformations_FEtdof_t1, Mask_FEtdof, [('output_image','in_file')]),
-              (selectfiles, Mask_FEtdof, [('EPI_Mask','mask_file')])
-
-
 
               ])
 
