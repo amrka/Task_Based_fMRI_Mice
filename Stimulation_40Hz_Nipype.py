@@ -30,11 +30,11 @@ MatlabCommand.set_default_matlab_cmd("matlab -nodesktop -nosplash")
 experiment_dir = '/media/amr/HDD/Work/Stimulation'  
 
 subject_list = ['003','005','008','011','018','019','020','13x']
-session_list = ['run001', 'run002', 'run003']
+session_list = ['run001', 'run002']
 
                 
-output_dir  = '20Hz_Task_Based_OutputDir'
-working_dir = '20Hz_Task_Based_WorkingDir'
+output_dir  = '40Hz_Task_Based_OutputDir'
+working_dir = '40Hz_Task_Based_WorkingDir'
 
 preproc_task = Workflow(name = 'preproc_task')
 preproc_task.base_dir = opj(experiment_dir, working_dir)
@@ -54,7 +54,7 @@ templates = {
              'Anat'      : 'Data/{subject_id}/Anat_{subject_id}_bet.nii.gz',
              'Anat_Mask' : 'Data/{subject_id}/Anat_{subject_id}_Mask.nii.gz',
 
-             'Stim_20Hz' : 'Data/{subject_id}/Stim_{subject_id}_??_20Hz_{session_id}.nii.gz',
+             'Stim_40Hz' : 'Data/{subject_id}/Stim_{subject_id}_??_20Hz_{session_id}.nii.gz',
              'EPI_Mask'  : 'Data/{subject_id}/EPI_{subject_id}_Mask.nii.gz'
              }
 
