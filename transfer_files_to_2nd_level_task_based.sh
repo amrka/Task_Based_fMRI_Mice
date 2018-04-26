@@ -44,7 +44,7 @@ for folder in _session*;do
 	/media/amr/HDD/Work/Stimulation/10Hz_higher_level_stats/varcopes/${freq}_${id_run}_${id_sub}_varcope1.nii.gz
 	#copy FEtdof to  FEtdof folder
 	imcp Mask_FEtdof/FEtdof_t1_trans_masked.nii.gz \
-	/media/amr/HDD/Work/Stimulation/10Hz_higher_level_stats/tdof/${freq}_${id_run}_${id_sub}_tdof1.nii.g
+	/media/amr/HDD/Work/Stimulation/10Hz_higher_level_stats/tdof/${freq}_${id_run}_${id_sub}_tdof1.nii.gz
 
 	cd ..
 done
@@ -85,7 +85,7 @@ for folder in _session*;do
 	/media/amr/HDD/Work/Stimulation/20Hz_higher_level_stats/varcopes/${freq}_${id_run}_${id_sub}_varcope1.nii.gz
 	#copy FEtdof to  FEtdof folder
 	imcp Mask_FEtdof/FEtdof_t1_trans_masked.nii.gz \
-	/media/amr/HDD/Work/Stimulation/20Hz_higher_level_stats/tdof/${freq}_${id_run}_${id_sub}_tdof1.nii.g
+	/media/amr/HDD/Work/Stimulation/20Hz_higher_level_stats/tdof/${freq}_${id_run}_${id_sub}_tdof1.nii.gz
 
 	cd ..
 done
@@ -124,7 +124,7 @@ for folder in _session*;do
 	/media/amr/HDD/Work/Stimulation/40Hz_higher_level_stats/varcopes/${freq}_${id_run}_${id_sub}_varcope1.nii.gz
 	#copy FEtdof to  FEtdof folder
 	imcp Mask_FEtdof/FEtdof_t1_trans_masked.nii.gz \
-	/media/amr/HDD/Work/Stimulation/40Hz_higher_level_stats/tdof/${freq}_${id_run}_${id_sub}_tdof1.nii.g
+	/media/amr/HDD/Work/Stimulation/40Hz_higher_level_stats/tdof/${freq}_${id_run}_${id_sub}_tdof1.nii.gz
 
 	cd ..
 done
