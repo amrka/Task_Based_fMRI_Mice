@@ -18,8 +18,8 @@ for image in os.listdir(dir):
     print number
     print run
     if number in A:
-         os.rename(image, 'A_%s_%s' % (run,image))
+         os.rename(image, 'A_%s_%s' % (number,image))
         
     elif number in B:
-         os.rename(image, 'B_%s_%s' % (run,image))
-        
+         os.rename(image, 'B_%s_%s' % (number,image))
+     
