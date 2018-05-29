@@ -7,6 +7,7 @@
 #all in study_template space and masked
 
 #make the following tree for each frequency manually, you lazy fuck
+#Nah...
 # 10Hz_higher_level_stats/
 # ├── copes
 # ├── dof
