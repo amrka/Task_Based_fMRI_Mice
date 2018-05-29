@@ -29,8 +29,8 @@ MatlabCommand.set_default_matlab_cmd("matlab -nodesktop -nosplash")
 # In[2]:
 experiment_dir = '/media/amr/HDD/Work/Stimulation'  
 
-subject_list = ['003','005','008','011','018','019','020','13x']
-session_list = ['run001', 'run002']
+subject_list = ['003','005','008','011','018','019','020', '059', '060','062','063','066']
+session_list = ['run001', 'run002', 'run003']
 
                 
 output_dir  = '40Hz_Task_Based_OutputDir'
@@ -51,11 +51,14 @@ infosource.iterables = [('subject_id', subject_list),
 # In[21]:
 
 templates = {
-             'Anat'      : 'Data/{subject_id}/Anat_{subject_id}_bet.nii.gz',
-             'Anat_Mask' : 'Data/{subject_id}/Anat_{subject_id}_Mask.nii.gz',
 
-             'Stim_40Hz' : 'Data/{subject_id}/Stim_{subject_id}_??_20Hz_{session_id}.nii.gz',
-             'EPI_Mask'  : 'Data/{subject_id}/EPI_{subject_id}_Mask.nii.gz'
+ 'Anat_Bias' : '/media/amr/HDD/Work/Stimulation/Registration_Stimulation_WorkingDir/Registration_Stimulation/_subject_id_{subject_id}/BiasFieldCorrection/Anat_{subject_id}_bet_corrected.nii.gz',
+ 'Anat_Mask' : 'Data/{subject_id}/Anat_{subject_id}_Mask.nii.gz',
+ 'Highres2Temp_Transformations' : '/media/amr/HDD/Work/Stimulation/Registration_Stimulation_WorkingDir/Registration_Stimulation/_subject_id_{subject_id}/HighresToTemplate/transformComposite.h5',
+
+
+ 'Stim_40Hz' : 'Data/{subject_id}/Stim_{subject_id}_??_40Hz_{session_id}.nii.gz',
+ 'EPI_Mask'  : 'Data/{subject_id}/EPI_{subject_id}_Mask.nii.gz'
              }
 
 selectfiles = Node(SelectFiles(templates,
@@ -83,9 +86,10 @@ Study_Template = '/media/amr/HDD/Work/October_Acquistion/Anat_Template.nii.gz'
 Study_Template_Mask = '/media/amr/HDD/Work/October_Acquistion/Anat_Template_Mask.nii.gz'
 #-----------------------------------------------------------------------------------------------------
 # In[7]:
-
-BiasFieldCorrection = Node(ants.N4BiasFieldCorrection(), name = 'BiasFieldCorrection')
-BiasFieldCorrection.inputs.save_bias = False
+#I made a seperate pipeline just for biasfield correction and registration
+#To avoid running it multiple times
+# BiasFieldCorrection = Node(ants.N4BiasFieldCorrection(), name = 'BiasFieldCorrection')
+# BiasFieldCorrection.inputs.save_bias = False
 #-----------------------------------------------------------------------------------------------------
 # In[14]:
 #fslmaths  ${folder}_mcf_2highres.nii.gz -mas ${folder}_2highres_mask ${folder}_mcf_2highres_bet;
@@ -94,6 +98,9 @@ Bet_mcf = Node(fsl.ApplyMask(), name = 'Remove_Skull_EPI')
 
 #-----------------------------------------------------------------------------------------------------
 # In[8]:
+
+#I made a seperate pipeline just for biasfield correction and registration
+#To avoid running it multiple times
 
 ## normalizing the anatomical_bias_corrected image to the common anatomical template
 ## Here only we are calculating the paramters, we apply them later.
@@ -107,41 +114,41 @@ Bet_mcf = Node(fsl.ApplyMask(), name = 'Remove_Skull_EPI')
 #But it is going to create a mess
 #So, just go with easy less-elegant solution
 #The elegant solution is in this file Mock_Script_Task_Based_Metaflow.py
-HighresToTemplate = Node(ants.Registration(), name = 'HighresToTemplate')
-HighresToTemplate.inputs.args='--float'
-HighresToTemplate.inputs.collapse_output_transforms=True
-HighresToTemplate.inputs.fixed_image=Study_Template
-HighresToTemplate.inputs.initial_moving_transform_com=True
-HighresToTemplate.inputs.num_threads=8
-HighresToTemplate.inputs.output_inverse_warped_image=True
-HighresToTemplate.inputs.output_warped_image=True
-HighresToTemplate.inputs.sigma_units=['vox']*3
-HighresToTemplate.inputs.transforms= ['Rigid', 'Affine', 'SyN']
-# HighresToTemplate.inputs.terminal_output='file'
-HighresToTemplate.inputs.winsorize_lower_quantile=0.005
-HighresToTemplate.inputs.winsorize_upper_quantile=0.995
-HighresToTemplate.inputs.convergence_threshold=[1e-06]
-HighresToTemplate.inputs.convergence_window_size=[10]
-HighresToTemplate.inputs.metric=['MI', 'MI', 'CC']
-HighresToTemplate.inputs.metric_weight=[1.0]*3
-HighresToTemplate.inputs.number_of_iterations=[[1000, 500, 250, 100],
-                                                 [1000, 500, 250, 100],
-                                                 [100, 70, 50, 20]]
-HighresToTemplate.inputs.radius_or_number_of_bins=[32, 32, 4]
-HighresToTemplate.inputs.sampling_percentage=[0.25, 0.25, 1]
-HighresToTemplate.inputs.sampling_strategy=['Regular',
-                                              'Regular',
-                                              'None']
-HighresToTemplate.inputs.shrink_factors=[[8, 4, 2, 1]]*3
-HighresToTemplate.inputs.smoothing_sigmas=[[3, 2, 1, 0]]*3
-HighresToTemplate.inputs.transform_parameters=[(0.1,),
-                                                 (0.1,),
-                                                 (0.1, 3.0, 0.0)]
-HighresToTemplate.inputs.use_histogram_matching=True
-HighresToTemplate.inputs.write_composite_transform=True
-HighresToTemplate.inputs.verbose=True
-HighresToTemplate.inputs.output_warped_image=True
-HighresToTemplate.inputs.float=True
+# HighresToTemplate = Node(ants.Registration(), name = 'HighresToTemplate')
+# HighresToTemplate.inputs.args='--float'
+# HighresToTemplate.inputs.collapse_output_transforms=True
+# HighresToTemplate.inputs.fixed_image=Study_Template
+# HighresToTemplate.inputs.initial_moving_transform_com=True
+# HighresToTemplate.inputs.num_threads=8
+# HighresToTemplate.inputs.output_inverse_warped_image=True
+# HighresToTemplate.inputs.output_warped_image=True
+# HighresToTemplate.inputs.sigma_units=['vox']*3
+# HighresToTemplate.inputs.transforms= ['Rigid', 'Affine', 'SyN']
+# # HighresToTemplate.inputs.terminal_output='file'
+# HighresToTemplate.inputs.winsorize_lower_quantile=0.005
+# HighresToTemplate.inputs.winsorize_upper_quantile=0.995
+# HighresToTemplate.inputs.convergence_threshold=[1e-06]
+# HighresToTemplate.inputs.convergence_window_size=[10]
+# HighresToTemplate.inputs.metric=['MI', 'MI', 'CC']
+# HighresToTemplate.inputs.metric_weight=[1.0]*3
+# HighresToTemplate.inputs.number_of_iterations=[[1000, 500, 250, 100],
+#                                                  [1000, 500, 250, 100],
+#                                                  [100, 70, 50, 20]]
+# HighresToTemplate.inputs.radius_or_number_of_bins=[32, 32, 4]
+# HighresToTemplate.inputs.sampling_percentage=[0.25, 0.25, 1]
+# HighresToTemplate.inputs.sampling_strategy=['Regular',
+#                                               'Regular',
+#                                               'None']
+# HighresToTemplate.inputs.shrink_factors=[[8, 4, 2, 1]]*3
+# HighresToTemplate.inputs.smoothing_sigmas=[[3, 2, 1, 0]]*3
+# HighresToTemplate.inputs.transform_parameters=[(0.1,),
+#                                                  (0.1,),
+#                                                  (0.1, 3.0, 0.0)]
+# HighresToTemplate.inputs.use_histogram_matching=True
+# HighresToTemplate.inputs.write_composite_transform=True
+# HighresToTemplate.inputs.verbose=True
+# HighresToTemplate.inputs.output_warped_image=True
+# HighresToTemplate.inputs.float=True
 
 #-----------------------------------------------------------------------------------------------------
 
@@ -297,9 +304,9 @@ Add_Mean_Image.inputs.operation = 'add'
 #-----------------------------------------------------------------------------------------------------
 # In[15]:
 #Fit the design to the voxels time-series
-design = '/media/amr/HDD/Nipype_Trial/design.mat'
-t_contrast = '/media/amr/HDD/Nipype_Trial/design.con'
-f_contrast = '/media/amr/HDD/Nipype_Trial/design.fts'
+design = '/media/amr/HDD/Work/Stimulation/1st_Level_Designs/design.mat'
+t_contrast = '/media/amr/HDD/Work/Stimulation/1st_Level_Designs/design.con'
+f_contrast = '/media/amr/HDD/Work/Stimulation/1st_Level_Designs/design.fts'
 
 Film_Gls = Node(fsl.FILMGLS(), name = 'Fit_Design_to_Timeseries')
 Film_Gls.inputs.design_file = design
@@ -319,7 +326,7 @@ Smooth_Est.inputs.dof = 148 #150 volumes and only one regressor
 #Clusterin on the statistical output of t-contrasts
 Clustering_t = Node(fsl.Cluster(), name = 'Clustering_t_Contrast')
 Clustering_t.inputs.threshold = 2.3
-Clustering_t.inputs.pthreshold = 0.001
+Clustering_t.inputs.pthreshold = 0.05
 Clustering_t.inputs.out_threshold_file = 'thresh_zstat1.nii.gz'
 # Clustering_t.inputs.out_index_file = 'mask_zstat1'
 # Clustering_t.inputs.out_localmax_txt_file = 'localmax'
@@ -331,7 +338,7 @@ Clustering_t.inputs.out_threshold_file = 'thresh_zstat1.nii.gz'
 #Clusterin on the statistical output of f-contrast
 Clustering_f = Node(fsl.Cluster(), name = 'Clustering_f_Contrast')
 Clustering_f.inputs.threshold = 2.3
-Clustering_f.inputs.pthreshold = 0.001
+Clustering_f.inputs.pthreshold = 0.05
 Clustering_f.inputs.out_threshold_file = 'thresh_zfstat1.nii.gz'
 
 #-----------------------------------------------------------------------------------------------------
@@ -422,19 +429,19 @@ preproc_task.connect([
 
               (infosource, selectfiles,[('subject_id','subject_id'),
                                         ('session_id', 'session_id')]),
-              (selectfiles, BiasFieldCorrection, [('Anat','input_image')]),
+              # (selectfiles, BiasFieldCorrection, [('Anat_Bias','input_image')]),
 
-              (BiasFieldCorrection,HighresToTemplate,[('output_image','moving_image')]),
-              (selectfiles, Bet_mcf, [('Stim_20Hz','in_file')]),
+              # (BiasFieldCorrection,HighresToTemplate,[('output_image','moving_image')]),
+              (selectfiles, Bet_mcf, [('Stim_40Hz','in_file')]),
               (selectfiles, Bet_mcf, [('EPI_Mask','mask_file')]),
 
               (Bet_mcf, FslRoi, [('out_file','in_file')]),
 
 
-              (BiasFieldCorrection, CoReg, [('output_image','fixed_image')]),
+              (selectfiles, CoReg, [('Anat_Bias','fixed_image')]),
               (FslRoi, CoReg, [('roi_file','moving_image')]),
 
-              (HighresToTemplate, Merge_Transformations, [('composite_transform','in1')]),
+              (selectfiles, Merge_Transformations, [('Highres2Temp_Transformations','in1')]),
               (CoReg, Merge_Transformations, [('composite_transform','in2')]),
 
               (FslRoi, McFlirt, [('roi_file','ref_file')]),
