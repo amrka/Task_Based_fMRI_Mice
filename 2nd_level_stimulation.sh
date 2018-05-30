@@ -43,7 +43,7 @@ vol=`echo $out | sed 's/D.*VOLUME /''/' | sed 's/ R.*/''/'`; echo VOLUME:$vol
 resl=`echo $out | sed 's/.*RESELS /''/'`;  echo RESELS:$resl
 
 cd 2nd_level_stats
-for zstat in zstat?.nii.gz;do
+for zstat in zstat*.nii.gz;do
 	zstat=`remove_ext $zstat`
 	no=`echo $zstat | sed 's/.*zstat/''/'`
 	echo $no
@@ -71,7 +71,7 @@ done
 
 
 
-for zfstat in zfstat?.nii.gz;do
+for zfstat in zfstat*.nii.gz;do
 	zfstat=`remove_ext $zfstat`
 	no=`echo $zfstat | sed 's/.*zfstat/''/'`
 	echo $no
@@ -130,7 +130,7 @@ vol=`echo $out | sed 's/D.*VOLUME /''/' | sed 's/ R.*/''/'`; echo VOLUME:$vol
 resl=`echo $out | sed 's/.*RESELS /''/'`;  echo RESELS:$resl
 
 cd 2nd_level_stats
-for zstat in zstat?.nii.gz;do
+for zstat in zstat*.nii.gz;do
 	zstat=`remove_ext $zstat`
 	no=`echo $zstat | sed 's/.*zstat/''/'`
 	echo $no
@@ -158,7 +158,7 @@ done
 
 
 
-for zfstat in zfstat?.nii.gz;do
+for zfstat in zfstat*.nii.gz;do
 	zfstat=`remove_ext $zfstat`
 	no=`echo $zfstat | sed 's/.*zfstat/''/'`
 	echo $no
@@ -218,7 +218,7 @@ vol=`echo $out | sed 's/D.*VOLUME /''/' | sed 's/ R.*/''/'`; echo VOLUME:$vol
 resl=`echo $out | sed 's/.*RESELS /''/'`;  echo RESELS:$resl
 
 cd 2nd_level_stats
-for zstat in zstat?.nii.gz;do
+for zstat in zstat*.nii.gz;do
 	zstat=`remove_ext $zstat`
 	no=`echo $zstat | sed 's/.*zstat/''/'`
 	echo $no
@@ -246,7 +246,7 @@ done
 
 
 
-for zfstat in zfstat?.nii.gz;do
+for zfstat in zfstat*.nii.gz;do
 	zfstat=`remove_ext $zfstat`
 	no=`echo $zfstat | sed 's/.*zfstat/''/'`
 	echo $no
@@ -306,7 +306,7 @@ vol=`echo $out | sed 's/D.*VOLUME /''/' | sed 's/ R.*/''/'`; echo VOLUME:$vol
 resl=`echo $out | sed 's/.*RESELS /''/'`;  echo RESELS:$resl
 
 cd 2nd_level_stats
-for zstat in zstat?.nii.gz;do
+for zstat in zstat*.nii.gz;do
 	zstat=`remove_ext $zstat`
 	no=`echo $zstat | sed 's/.*zstat/''/'`
 	echo $no
@@ -334,7 +334,7 @@ done
 
 
 
-for zfstat in zfstat?.nii.gz;do
+for zfstat in zfstat*.nii.gz;do
 	zfstat=`remove_ext $zfstat`
 	no=`echo $zfstat | sed 's/.*zfstat/''/'`
 	echo $no
@@ -394,7 +394,7 @@ vol=`echo $out | sed 's/D.*VOLUME /''/' | sed 's/ R.*/''/'`; echo VOLUME:$vol
 resl=`echo $out | sed 's/.*RESELS /''/'`;  echo RESELS:$resl
 
 cd 2nd_level_stats
-for zstat in zstat?.nii.gz;do
+for zstat in zstat*.nii.gz;do
 	zstat=`remove_ext $zstat`
 	no=`echo $zstat | sed 's/.*zstat/''/'`
 	echo $no
@@ -422,7 +422,7 @@ done
 
 
 
-for zfstat in zfstat?.nii.gz;do
+for zfstat in zfstat*.nii.gz;do
 	zfstat=`remove_ext $zfstat`
 	no=`echo $zfstat | sed 's/.*zfstat/''/'`
 	echo $no
@@ -483,7 +483,7 @@ vol=`echo $out | sed 's/D.*VOLUME /''/' | sed 's/ R.*/''/'`; echo VOLUME:$vol
 resl=`echo $out | sed 's/.*RESELS /''/'`;  echo RESELS:$resl
 
 cd 2nd_level_stats
-for zstat in zstat?.nii.gz;do
+for zstat in zstat*.nii.gz;do
 	zstat=`remove_ext $zstat`
 	no=`echo $zstat | sed 's/.*zstat/''/'`
 	echo $no
@@ -511,7 +511,7 @@ done
 
 
 
-for zfstat in zfstat?.nii.gz;do
+for zfstat in zfstat*.nii.gz;do
 	zfstat=`remove_ext $zfstat`
 	no=`echo $zfstat | sed 's/.*zfstat/''/'`
 	echo $no

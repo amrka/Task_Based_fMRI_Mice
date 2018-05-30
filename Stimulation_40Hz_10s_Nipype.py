@@ -441,8 +441,8 @@ preproc_task.connect([
               (selectfiles, CoReg, [('Anat_Bias','fixed_image')]),
               (FslRoi, CoReg, [('roi_file','moving_image')]),
 
-              (selectfiles, Merge_Transformations, [('Highres2Temp_Transformations','in1')]),
-              (CoReg, Merge_Transformations, [('composite_transform','in2')]),
+              # (selectfiles, Merge_Transformations, [('Highres2Temp_Transformations','in1')]),
+              # (CoReg, Merge_Transformations, [('composite_transform','in2')]),
 
               (FslRoi, McFlirt, [('roi_file','ref_file')]),
               (Bet_mcf, McFlirt, [('out_file','in_file')]),
@@ -502,15 +502,15 @@ preproc_task.connect([
               (Film_Gls, FEtdof_t1, [('copes','in_file')]),
 
               (Film_Gls, Apply_Transformations_cope1, [('copes','input_image')]),
-              (Merge_Transformations, Apply_Transformations_cope1, [('out','transforms')]),
+              (CoReg, Apply_Transformations_cope1, [('composite_transform','transforms')]),
 
 
               (Film_Gls, Apply_Transformations_varcope1, [('varcopes','input_image')]),
-              (Merge_Transformations, Apply_Transformations_varcope1, [('out','transforms')]),
+              (CoReg, Apply_Transformations_varcope1, [('composite_transform','transforms')]),
 
 
               (FEtdof_t1, Apply_Transformations_FEtdof_t1, [('out_file','input_image')]),
-              (Merge_Transformations, Apply_Transformations_FEtdof_t1, [('out','transforms')]),
+              (CoReg, Apply_Transformations_FEtdof_t1, [('composite_transform','transforms')]),
 
               (Apply_Transformations_FEtdof_t1, Mask_FEtdof, [('output_image','in_file')]),
 
